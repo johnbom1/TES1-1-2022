@@ -112,16 +112,27 @@ class Tela:
             self.btn_confirmar.grid(row=3, column=1)
 
         else:
-            messagebox.showwarning("Erro!", "Nenhum usuário selecionado!")
+            messagebox.showwarning("Aviso!", "Nenhum usuário selecionado!")
 
     def confirmar_atualiza(self):
         nome = self.ent_nome.get()
         cpf = self.ent_cpf.get()
         email = self.ent_email.get()
         selecionado = self.tvw.selection()
-        self.tvw.item(selecionado, values=(nome, cpf, email))
-        self.top_atualizar.destroy()
-        self.janela.deiconify()
+        lista = self.tvw.item(selecionado, 'values')
+        if lista[0] == nome and lista[1] == cpf and lista[2] == email:
+            messagebox.showwarning('Atenção!', 'Nenhuma mudança no arquivo!')
+            # self.top_atualizar.destroy()
+            self.janela.deiconify()
+        else:
+            yn = messagebox.askyesno(
+                "Atenção!", "Deseja efetuar as alterações?")
+
+            if yn == True:
+                self.tvw.item(selecionado, values=(nome, cpf, email))
+                self.top_atualizar.destroy()
+                self.janela.deiconify()
+                messagebox.showinfo("Sucesso!", "Alterações efetuadas!")
 
     def deletar_todos(self):
         var = messagebox.askquestion("Cuidado", "Você está certo disso?")
